@@ -116,23 +116,23 @@ end
 function GM:PlayerCanDisguiseCurrentTarget(ply)
 	if !IsValid(ply) then return false, nil end
 	
-	local HorizLeniency = 50
-	local MinHLeniency = 100
-	local VerticalLeniency = 100	
+	local horizLeniency = 50
+	local minHLeniency = 100
+	local verticalLeniency = 100	
 	
 	if ply:Team() == 3 then
 		local tr = ply:GetPropEyeTrace()
 		if IsValid(tr.Entity) then
-			local TestPos = Vector(tr.StartPos.x, tr.StartPos.y, 0)
-			local HitPosition = Vector(tr.HitPos.x, tr.HitPos.y, 0)
-			local HitZ = tr.HitPos.z
-			local PropCurZ = ply:GetPos().z
-			local PropMaxZ = ply:OBBMaxs().z + PropCurZ
-			local PropMinZ = ply:OBBMins().z + PropCurZ
-			local WithinZRange = HitZ >= PropMinZ - VerticalLeniency && HitZ <= PropMaxZ + VerticalLeniency
-			local PropXY, PropZ = ply:GetPropSize()
-			local WithinHorizRange = HitPosition:Distance(TestPos) < math.max(PropXY + HorizLeniency, MinHLeniency)
-			if WithinHorizRange && WithinZRange then
+			local testPos = Vector(tr.StartPos.x, tr.StartPos.y, 0)
+			local hitPosition = Vector(tr.HitPos.x, tr.HitPos.y, 0)
+			local hitZ = tr.HitPos.z
+			local propCurZ = ply:GetPos().z
+			local propMaxZ = ply:OBBMaxs().z + propCurZ
+			local propMinZ = ply:OBBMins().z + propCurZ
+			local withinZRange = hitZ >= propMinZ - verticalLeniency && hitZ <= propMaxZ + verticalLeniency
+			local propXY, propZ = ply:GetPropSize()
+			local withinHorizRange = hitPosition:Distance(testPos) < math.max(propXY + horizLeniency, minHLeniency)
+			if withinHorizRange and withinZRange then
 				if ply:CanDisguiseAsProp(tr.Entity) then
 					return true, tr.Entity
 				end	
